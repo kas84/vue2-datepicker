@@ -33,6 +33,10 @@ export default {
     defaultPanel: {
       type: String,
     },
+    disabledCalendarChanger: {
+      type: [Function, String],
+      default: () => false,
+    },
     disabledDate: {
       type: Function,
       default: () => false,
@@ -111,6 +115,15 @@ export default {
       }
       this.innerCalendar = startOfMonth(calendarDate);
     },
+    isDisabledCalendarChanger(date) {
+      if (this.disabledCalendarChanger === 'smart') {
+        return this.isDisabled(date);
+      }
+      if (typeof this.disabledCalendarChanger === 'function') {
+        return this.disabledCalendarChanger(date);
+      }
+      return false;
+    },
     isDisabled(date) {
       return this.disabledDate(new Date(date), this.innerValue);
     },
@@ -185,19 +198,43 @@ export default {
       return classes.concat(this.getClasses(cellDate, this.innerValue, classes.join(' ')));
     },
     getMonthClasses(month) {
-      if (this.type !== 'month') {
-        return this.calendarMonth === month ? 'active' : '';
-      }
       const classes = [];
+      if (this.type !== 'month') {
+        if (this.calendarMonth === month) {
+          classes.push('active');
+        }
+        const minDate = new Date(this.innerCalendar);
+        minDate.setMonth(month, 1);
+        minDate.setHours(0, 0, 0, 0);
+        const maxDate = new Date(this.innerCalendar);
+        maxDate.setMonth(month + 1, 0);
+        maxDate.setHours(23, 59, 59, 999);
+        if (this.isDisabledCalendarChanger(minDate) && this.isDisabledCalendarChanger(maxDate)) {
+          classes.push('disabled');
+        }
+        return classes;
+      }
       const cellDate = this.getMonthCellDate(month);
       classes.push(this.getStateClass(cellDate));
       return classes.concat(this.getClasses(cellDate, this.innerValue, classes.join(' ')));
     },
     getYearClasses(year) {
-      if (this.type !== 'year') {
-        return this.calendarYear === year ? 'active' : '';
-      }
       const classes = [];
+      if (this.type !== 'year') {
+        if (this.calendarYear === year) {
+          classes.push('active');
+        }
+        const minDate = new Date(this.innerCalendar);
+        minDate.setFullYear(year, 0, 1);
+        minDate.setHours(0, 0, 0, 0);
+        const maxDate = new Date(this.innerCalendar);
+        maxDate.setFullYear(year, 11, 31);
+        maxDate.setHours(23, 59, 59, 999);
+        if (this.isDisabledCalendarChanger(minDate) && this.isDisabledCalendarChanger(maxDate)) {
+          classes.push('disabled');
+        }
+        return classes;
+      }
       const cellDate = this.getYearCellDate(year);
       classes.push(this.getStateClass(cellDate));
       return classes.concat(this.getClasses(cellDate, this.innerValue, classes.join(' ')));
@@ -227,6 +264,7 @@ export default {
     if (panel === 'year') {
       return (
         <TableYear
+          disabledCalendarChanger={this.isDisabledCalendarChanger}
           calendar={innerCalendar}
           getCellClasses={this.getYearClasses}
           getYearPanel={this.getYearPanel}
@@ -238,6 +276,7 @@ export default {
     if (panel === 'month') {
       return (
         <TableMonth
+          disabledCalendarChanger={this.isDisabledCalendarChanger}
           calendar={innerCalendar}
           getCellClasses={this.getMonthClasses}
           onSelect={this.handleSelectMonth}
@@ -248,6 +287,7 @@ export default {
     }
     return (
       <TableDate
+        disabledCalendarChanger={this.isDisabledCalendarChanger}
         class={{ [`${this.prefixClass}-calendar-week-mode`]: this.type === 'week' }}
         calendar={innerCalendar}
         getCellClasses={this.getDateClasses}

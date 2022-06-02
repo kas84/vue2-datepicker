@@ -6,6 +6,8 @@
         v-model="value1"
         format="YYYY-MM-DD"
         type="date"
+        :disabled-date="disabledDate"
+        disabled-arrows="smart"
         placeholder="Select date"
       ></date-picker>
     </section>
@@ -44,6 +46,14 @@ export default {
       value5: null,
       value6: null,
     };
+  },
+  computed: {
+    // calendar()
+  },
+  methods: {
+    disabledDate(date) {
+      return date > new Date();
+    },
   },
 };
 </script>
