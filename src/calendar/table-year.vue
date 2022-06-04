@@ -1,8 +1,8 @@
 <template>
   <div :class="`${prefixClass}-calendar ${prefixClass}-calendar-panel-year`">
     <div :class="`${prefixClass}-calendar-header`">
-      <icon-button type="double-left" @click="handleIconDoubleLeftClick"></icon-button>
-      <icon-button type="double-right" @click="handleIconDoubleRightClick"></icon-button>
+      <icon-button type="double-left" @click.stop="handleIconDoubleLeftClick"></icon-button>
+      <icon-button type="double-right" @click.stop="handleIconDoubleRightClick"></icon-button>
       <span :class="`${prefixClass}-calendar-header-label`">
         <span>{{ firstYear }}</span>
         <span :class="`${prefixClass}-calendar-decade-separator`"></span>
@@ -10,7 +10,7 @@
       </span>
     </div>
     <div :class="`${prefixClass}-calendar-content`">
-      <table :class="`${prefixClass}-table ${prefixClass}-table-year`" @click="handleClick">
+      <table :class="`${prefixClass}-table ${prefixClass}-table-year`" @click.stop="handleClick">
         <tr v-for="(row, i) in years" :key="i">
           <td
             v-for="(cell, j) in row"

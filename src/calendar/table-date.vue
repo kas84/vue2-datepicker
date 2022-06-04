@@ -1,10 +1,10 @@
 <template>
   <div :class="`${prefixClass}-calendar ${prefixClass}-calendar-panel-date`">
     <div :class="`${prefixClass}-calendar-header`">
-      <icon-button type="double-left" @click="handleIconDoubleLeftClick"></icon-button>
-      <icon-button type="left" @click="handleIconLeftClick"></icon-button>
-      <icon-button type="double-right" @click="handleIconDoubleRightClick"></icon-button>
-      <icon-button type="right" @click="handleIconRightClick"></icon-button>
+      <icon-button type="double-left" @click.stop="handleIconDoubleLeftClick"></icon-button>
+      <icon-button type="left" @click.stop="handleIconLeftClick"></icon-button>
+      <icon-button type="double-right" @click.stop="handleIconDoubleRightClick"></icon-button>
+      <icon-button type="right" @click.stop="handleIconRightClick"></icon-button>
       <span :class="`${prefixClass}-calendar-header-label`">
         <button
           v-for="item in yearMonth"
@@ -13,7 +13,7 @@
           :class="
             `${prefixClass}-btn ${prefixClass}-btn-text ${prefixClass}-btn-current-${item.panel}`
           "
-          @click="handlePanelChange(item.panel)"
+          @click.stop="handlePanelChange(item.panel)"
         >
           {{ item.label }}
         </button>
@@ -27,7 +27,7 @@
             <th v-for="day in days" :key="day">{{ day }}</th>
           </tr>
         </thead>
-        <tbody @click="handleCellClick">
+        <tbody @click.stop="handleCellClick">
           <tr
             v-for="(row, i) in dates"
             :key="i"

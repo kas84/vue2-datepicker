@@ -1,20 +1,20 @@
 <template>
   <div :class="`${prefixClass}-calendar ${prefixClass}-calendar-panel-month`">
     <div :class="`${prefixClass}-calendar-header`">
-      <icon-button type="double-left" @click="handleIconDoubleLeftClick"></icon-button>
-      <icon-button type="double-right" @click="handleIconDoubleRightClick"></icon-button>
+      <icon-button type="double-left" @click.stop="handleIconDoubleLeftClick"></icon-button>
+      <icon-button type="double-right" @click.stop="handleIconDoubleRightClick"></icon-button>
       <span :class="`${prefixClass}-calendar-header-label`">
         <button
           type="button"
           :class="`${prefixClass}-btn ${prefixClass}-btn-text`"
-          @click="handlePanelChange"
+          @click.stop="handlePanelChange"
         >
           {{ calendarYear }}
         </button>
       </span>
     </div>
     <div :class="`${prefixClass}-calendar-content`">
-      <table :class="`${prefixClass}-table ${prefixClass}-table-month`" @click="handleClick">
+      <table :class="`${prefixClass}-table ${prefixClass}-table-month`" @click.stop="handleClick">
         <tr v-for="(row, i) in months" :key="i">
           <td
             v-for="(cell, j) in row"
