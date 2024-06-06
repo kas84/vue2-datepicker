@@ -7,8 +7,8 @@
       <icon-button type="right" @click.stop="handleIconRightClick"></icon-button>
       <span :class="`${prefixClass}-calendar-header-label`">
         <button
-          v-for="item in yearMonth"
-          :key="item.panel"
+          v-for="(item,$index) in yearMonth"
+          :key="$index"
           type="button"
           :class="
             `${prefixClass}-btn ${prefixClass}-btn-text ${prefixClass}-btn-current-${item.panel}`
@@ -24,7 +24,7 @@
         <thead>
           <tr>
             <th v-if="showWeekNumber" :class="`${prefixClass}-week-number-header`"></th>
-            <th v-for="day in days" :key="day">{{ day }}</th>
+            <th v-for="(day,$index) in days" :key="$index">{{ day }}</th>
           </tr>
         </thead>
         <tbody @click.stop="handleCellClick">
