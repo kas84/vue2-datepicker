@@ -9,7 +9,7 @@
       >
         <li
           v-for="(item, j) in col.list"
-          :key="item.value"
+          :key="j"
           :data-index="j"
           :class="[`${prefixClass}-time-item`, getClasses(item.value, col.type)]"
         >

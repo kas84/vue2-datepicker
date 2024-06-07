@@ -1,8 +1,8 @@
 <template>
   <scrollbar-vertical>
     <div
-      v-for="item in list"
-      :key="item.value"
+      v-for="(item,$index) in list"
+      :key="$index"
       :class="[`${prefixClass}-time-option`, getClasses(item.value)]"
       @click.stop="handleSelect(item.value)"
     >
